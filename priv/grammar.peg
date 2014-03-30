@@ -1,0 +1,8 @@
+lime_program <- space? module space? ~;
+module <- 'module' space module_name ~;
+module_name <- A* ~;
+space <- [ \t\n\s\r]* ~;
+A <- U / L / D ~;
+U <- [A-Z] ~;
+L <- [a-z] ~;
+D <- [0-9] ~;
