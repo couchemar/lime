@@ -1,18 +1,22 @@
 Definitions.
 
 D          = [0-9]
-UpperCase  = [A-Z]
-LowerCase  = [a-z]
+UC  = [A-Z]
+LC  = [a-z]
 Underscore = _
 Space      = [\s\n\r\t]
-Symbols    = [+-=/*]
+Symbols    = [-+*/]
 
 Rules.
 
 %% Atoms.
 
-{LowerCase}({UpperCase}|{LowerCase}|{D}|{Underscore}|)* : {token, {atom, list_to_atom(TokenChars), TokenLine}}.
-{Symbols}+ : {token, {atom, list_to_atom(TokenChars), TokenLine}}.
+{LC}({UC}|{LC}|{D}|{Underscore})* : {token, lower_atom_or_keyword(TokenLine, TokenChars)}.
+{UC}({UC}|{LC}|{D}|{Underscore})* : {token, {upper_atom, TokenLine, list_to_atom(TokenChars)}}.
+
+
+%% Symbols.
+{Symbols}+ : {token, {symbol, TokenLine, list_to_atom(TokenChars)}}.
 
 
 %% Spaces.
@@ -20,8 +24,18 @@ Rules.
 
 %% Numbers.
 
-{D}+ : {token, {number, list_to_integer(TokenChars), TokenLine}}.
-{D}+\.{D}+((E|e)(\+|\-)?{D}+)? : {token, {number, list_to_float(TokenChars), TokenLine}}.
+{D}+ : {token, {number, TokenLine, list_to_integer(TokenChars)}}.
+{D}+\.{D}+((E|e)(\+|\-)?{D}+)? : {token, {number, TokenLine, list_to_float(TokenChars)}}.
 
 
 Erlang code.
+
+lower_atom_or_keyword(TokenLine, TokenChars) ->
+    case is_reserved(TokenChars) of
+        true ->
+            {list_to_atom(TokenChars), TokenLine};
+        false ->
+            {lower_atom, TokenLine, list_to_atom(TokenChars)}
+    end.
+
+is_reserved(_) -> false.
