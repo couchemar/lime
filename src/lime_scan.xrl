@@ -1,8 +1,8 @@
 Definitions.
 
 D          = [0-9]
-UC  = [A-Z]
-LC  = [a-z]
+UC         = [A-Z]
+LC         = [a-z]
 Underscore = _
 Space      = [\s\n\r\t]
 Symbols    = [-+*/]
