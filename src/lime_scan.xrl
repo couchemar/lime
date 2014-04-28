@@ -5,7 +5,7 @@ UC         = [A-Z]
 LC         = [a-z]
 Underscore = _
 Space      = [\s\n\r\t]
-Symbols    = [-+*/]
+Symbols    = [-+*/=]
 
 Rules.
 
@@ -16,7 +16,7 @@ Rules.
 
 
 %% Symbols.
-{Symbols}+ : {token, {symbol, TokenLine, list_to_atom(TokenChars)}}.
+{Symbols}+ : {token, {list_to_atom(TokenChars), TokenLine}}.
 
 
 %% Spaces.
@@ -38,4 +38,8 @@ lower_atom_or_keyword(TokenLine, TokenChars) ->
             {lower_atom, TokenLine, list_to_atom(TokenChars)}
     end.
 
+is_reserved("module") -> true;
+is_reserved("end") -> true;
+is_reserved("val") -> true;
+is_reserved("fun") -> true;
 is_reserved(_) -> false.
