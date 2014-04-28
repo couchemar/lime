@@ -5,7 +5,7 @@ defmodule Lime.Mixfile do
     [ app: :lime,
       version: "0.0.1",
       elixir: "~> 0.13.0",
-      compilers: [ :leex, :erlang, :elixir, :app ],
+      compilers: [ :yecc, :leex, :erlang, :elixir, :app ],
       deps: deps ]
   end
 
