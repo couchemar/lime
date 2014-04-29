@@ -12,27 +12,28 @@ Rootsymbol program.
 
 
 program -> module_def : '$1'.
-module_def -> module upper_atom '=' exprs end : {module, line('$1'), '$2', '$4'}.
+module_def -> module upper_atom '=' exprs end : {module, line('$1'), unwrap('$2'), '$4'}.
 
-exprs -> fun_expr : '$1'.
+exprs -> fun_expr : ['$1'].
 
 fun_expr -> fun fun_name fun_args '=' fun_body : {'fun', line('$1'), '$2', '$3', '$5'}.
 
-fun_name -> lower_atom : '$1'.
+fun_name -> lower_atom : unwrap('$1').
 
 fun_args -> fun_arg : ['$1'].
 fun_args -> fun_arg fun_args : ['$1'|'$2'].
 
-fun_arg -> lower_atom : '$1'.
+fun_arg -> lower_atom : unwrap('$1').
 
 fun_body -> add_expr : '$1'.
 
-add_expr -> lower_atom '+' lower_atom : {'$2', line('$1'), ['$1', '$3']}.
+add_expr -> lower_atom '+' lower_atom : {unwrap('$2'), line('$1'), [unwrap('$1'), unwrap('$3')]}.
 
 
 Erlang code.
 
-line({_, L}) ->
-    L;
-line({_, L, _}) ->
-    L.
+line({_, L}) -> L;
+line({_, L, _}) -> L.
+
+unwrap({V, _}) -> V;
+unwrap({_, _, V}) -> V.
