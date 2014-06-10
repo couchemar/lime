@@ -1,33 +1,19 @@
 Nonterminals
-    program exprs fun_expr fun_args fun_arg fun_body add_expr
-    module_def fun_name.
+    grammar quotation.
 
 Terminals
-    module fun '=' end lower_atom upper_atom
-    '+'.
+    number atom word.
 
-Rootsymbol program.
-
-%%Expect 3.
+Rootsymbol grammar.
 
 
-program -> module_def : '$1'.
-module_def -> module upper_atom '=' exprs end : {module, line('$1'), unwrap('$2'), '$4'}.
-
-exprs -> fun_expr : ['$1'].
-
-fun_expr -> fun fun_name fun_args '=' fun_body : {'fun', line('$1'), '$2', '$3', '$5'}.
-
-fun_name -> lower_atom : unwrap('$1').
-
-fun_args -> fun_arg : ['$1'].
-fun_args -> fun_arg fun_args : ['$1'|'$2'].
-
-fun_arg -> lower_atom : unwrap('$1').
-
-fun_body -> add_expr : '$1'.
-
-add_expr -> lower_atom '+' lower_atom : {unwrap('$2'), line('$1'), [unwrap('$1'), unwrap('$3')]}.
+grammar -> quotation : '$1'.
+quotation -> number quotation : ['$1'|'$2'].
+quotation -> atom quotation : ['$1'|'$2'].
+quotation -> word quotation : ['$1'|'$2'].
+quotation -> word   : ['$1'].
+quotation -> atom   : ['$1'].
+quotation -> number : ['$1'].
 
 
 Erlang code.
