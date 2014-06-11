@@ -8,18 +8,14 @@ Rootsymbol grammar.
 
 
 grammar -> quotation : '$1'.
-quotation -> number quotation : ['$1'|'$2'].
-quotation -> atom quotation : ['$1'|'$2'].
-quotation -> word quotation : ['$1'|'$2'].
-quotation -> word   : ['$1'].
-quotation -> atom   : ['$1'].
-quotation -> number : ['$1'].
+quotation -> number quotation : [rotate('$1')|'$2'].
+quotation -> atom quotation : [rotate('$1')|'$2'].
+quotation -> word quotation : [rotate('$1')|'$2'].
+quotation -> word   : [rotate('$1')].
+quotation -> atom   : [rotate('$1')].
+quotation -> number : [rotate('$1')].
 
 
 Erlang code.
 
-line({_, L}) -> L;
-line({_, L, _}) -> L.
-
-unwrap({V, _}) -> V;
-unwrap({_, _, V}) -> V.
+rotate({T, L, V}) -> {V, T, L}.
