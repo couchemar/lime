@@ -1,0 +1,2 @@
+#!/bin/sh
+exec elixir --no-halt --erl "-pa _build/dev/lib/*/ebin -user Elixir.Lime.CLI"

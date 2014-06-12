@@ -18,4 +18,5 @@ quotation -> number : [rotate('$1')].
 
 Erlang code.
 
-rotate({T, L, V}) -> {V, T, L}.
+%%rotate({T, L, V}) -> {V, T, L}.
+rotate({T, L, V}) -> V.
