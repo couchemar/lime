@@ -7,6 +7,8 @@ defmodule Lime.IO do
     case IO.gets('') do
       :eof ->
         :eof
+      {:error, reason} ->
+        throw reason
       data ->
         case :lime_scan.string(data) do
           {:ok, scanned, _} ->
@@ -15,8 +17,6 @@ defmodule Lime.IO do
                 parsed
             end
         end
-      {:error, reason} ->
-        throw reason
     end
   end
 
