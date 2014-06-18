@@ -19,9 +19,14 @@ defmodule Lime.CLI do
 
   defp server_loop ctx do
     prompt(ctx)
-    q = Lime.IO.read
-    new_stack = ctx[:stack] |> SandCat.compound(q) |> IO.inspect
-    ctx |> update_counter |> update_stack(new_stack) |> server_loop
+    case Lime.IO.read do
+      {:parse_error, description} ->
+        IO.inspect description
+        server_loop(ctx)
+      q ->
+        new_stack = SandCat.compound(ctx[:stack], q) |> IO.inspect
+        ctx |> update_counter |> update_stack(new_stack) |> server_loop
+    end
   end
 
   defp prompt %__MODULE__{counter: counter} do

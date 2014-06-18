@@ -15,6 +15,11 @@ defmodule Lime.IO do
             case :lime_parse.parse(scanned) do
               {:ok, parsed} ->
                 parsed
+              {:error, error} ->
+                case error do
+                  {_l, _, description} ->
+                    {:parse_error, description}
+                end
             end
         end
     end
