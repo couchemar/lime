@@ -10,7 +10,7 @@ Rules.
 
 %% Numbers.
 
-{D}+ : {token, {number, TokenLine, list_to_integer(TokenChars)}}.
+(\+|-)?{D}+ : {token, {number, TokenLine, list_to_integer(TokenChars)}}.
 {D}+\.{D}+((E|e)(\+|\-)?{D}+)? : {token, {number, TokenLine, list_to_float(TokenChars)}}.
 
 %% Quotations.
