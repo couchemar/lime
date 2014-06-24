@@ -1,1 +1,1 @@
-%{"sand_cat": {:git, "git://github.com/couchemar/sand-cat.git", "dc0c2dae61d38d298a0cf4213381b4ec78931974", []}}
+%{"sand_cat": {:git, "git://github.com/couchemar/sand-cat.git", "3dd69b250f399321be8e61909ec6bbff78ed6e08", []}}

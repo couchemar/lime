@@ -3,7 +3,7 @@ defmodule Lime.CLI do
   require SandCat
 
   @derive [Access]
-  defstruct stack: [], counter: 1
+  defstruct sand_context: SandCat.new, counter: 1
 
   def start do
     :user_drv.start([:"tty_sl -c -e", {Lime.CLI, :boot, []}])
@@ -25,10 +25,11 @@ defmodule Lime.CLI do
           IO.inspect description
           ctx
         q ->
-          new_stack = SandCat.compound(
-               ctx[:stack], q
-          ) |> IO.inspect
-          ctx |> update_counter |> update_stack(new_stack)
+          new_context = SandCat.compound(
+               ctx[:sand_context], q
+          )
+          print_stack new_context
+          ctx |> update_counter |> update_context(new_context)
       end
     catch
       :error, error ->
@@ -43,11 +44,15 @@ defmodule Lime.CLI do
   end
 
   defp update_counter %__MODULE__{counter: counter}=ctx do
-    struct(ctx, counter: counter + 1)
+    put_in(ctx[:counter], counter + 1)
   end
 
-  defp update_stack(ctx, new_stack) do
-    struct(ctx, stack: new_stack)
+  defp update_context(ctx, new_context) do
+    put_in(ctx[:sand_context], new_context)
+  end
+
+  defp print_stack  %SandCat{stack: stack} do
+    stack |> Enum.reverse |> IO.inspect
   end
 
 end
