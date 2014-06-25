@@ -51,8 +51,12 @@ defmodule Lime.CLI do
     put_in(ctx[:sand_context], new_context)
   end
 
+  @max_items 10
   defp print_stack  %SandCat{stack: stack} do
-    stack |> Enum.reverse |> IO.inspect
+    {top, rest} = Enum.split stack, @max_items
+    rest_length = length rest
+    if  rest_length > 0, do: IO.puts "#{rest_length} more items"
+    for item <- top |> Enum.reverse, do: IO.inspect item
   end
 
 end
