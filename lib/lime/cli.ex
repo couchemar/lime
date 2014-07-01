@@ -1,21 +1,16 @@
 defmodule Lime.CLI do
 
   require SandCat
+  alias SandCat.Words
 
   @derive [Access]
-  defstruct sand_context: SandCat.new, counter: 1
+  defstruct sand_context: SandCat.new([], [Words.words]), counter: 1
 
-  def start do
-    :user_drv.start([:"tty_sl -c -e", {Lime.CLI, :boot, []}])
-  end
+  def start, do: :user_drv.start([:"tty_sl -c -e", {Lime.CLI, :boot, []}])
 
-  def boot do
-    spawn(fn -> start_server() end)
-  end
+  def boot, do: spawn(fn -> start_server() end)
 
-  defp start_server do
-    struct(__MODULE__) |> server_loop
-  end
+  defp start_server, do: struct(__MODULE__) |> server_loop
 
   defp server_loop ctx do
     prompt(ctx)
@@ -39,9 +34,7 @@ defmodule Lime.CLI do
     end |> server_loop
   end
 
-  defp prompt %__MODULE__{counter: counter} do
-    IO.write "Lime(#{counter})> "
-  end
+  defp prompt(%__MODULE__{counter: counter}), do: IO.write "Lime(#{counter})> "
 
   defp update_counter %__MODULE__{counter: counter}=ctx do
     put_in(ctx[:counter], counter + 1)
