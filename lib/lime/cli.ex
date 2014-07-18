@@ -2,9 +2,12 @@ defmodule Lime.CLI do
 
   require SandCat
   alias SandCat.Words
+  alias Lime.Vocabularies.SimpleParser
+
+  @vocabularies [Words.words, SimpleParser.words]
 
   @derive [Access]
-  defstruct sand_context: SandCat.new([], [Words.words]), counter: 1
+  defstruct sand_context: SandCat.new([], @vocabularies), counter: 1
 
   def start, do: :user_drv.start([:"tty_sl -c -e", {Lime.CLI, :boot, []}])
 
@@ -21,7 +24,9 @@ defmodule Lime.CLI do
           ctx
         q ->
           new_context = SandCat.compound(
-               ctx[:sand_context], q
+               ctx[:sand_context], [ q, :tokens, :stack,
+                                     :tokens, :"init-stack",
+                                     :parse, :call ]
           )
           print_stack new_context
           ctx |> update_counter |> update_context(new_context)

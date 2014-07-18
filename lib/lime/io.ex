@@ -1,9 +1,11 @@
 defmodule Lime.IO do
+  alias Lime.Parser
+
   def read do
-    scan_and_parse([])
+    scan()
   end
 
-  def scan_and_parse([]) do
+  def scan() do
     case IO.gets('') do
       :eof ->
         :eof
@@ -12,12 +14,7 @@ defmodule Lime.IO do
       data ->
         case :lime_scan.string(data) do
           {:ok, scanned, _} ->
-            case :lime_parse.parse(scanned) do
-              {:ok, parsed} ->
-                parsed
-              {:error, {_l, _, description}} ->
-                {:parse_error, description}
-            end
+            scanned
         end
     end
   end
