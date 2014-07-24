@@ -23,10 +23,13 @@ defmodule Lime.CLI do
           IO.inspect description
           ctx
         q ->
+          IO.inspect q
           new_context = SandCat.compound(
                ctx[:sand_context], [ q, :tokens, :stack,
                                      :tokens, :"init-stack",
-                                     :parse, :call ]
+                                     :parse,
+                                     #:call
+                                   ]
           )
           print_stack new_context
           ctx |> update_counter |> update_context(new_context)

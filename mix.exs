@@ -17,7 +17,7 @@ defmodule Lime.Mixfile do
   defp deps do
     [
      {:sand_cat, #github: "couchemar/sand-cat"
-        path: "../sand_cat"}
+        path: "../sand-cat"}
     ]
   end
 end
